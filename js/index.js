@@ -127,7 +127,7 @@ function switchCamera() {
   stopScan();
   console.log("cameraConfig", cameraConfig);
   setTimeout(() => {
-    cameraConfig.facingMode = "user";
+    toggleCameraFacingMode();
     console.log("cameraConfig", cameraConfig);
     startScan();
   }, 1000);
@@ -180,6 +180,11 @@ function handleScannerError(err) {
   alert(err.name || err.message || err);
   imgError.style.display = "block";
   scanner.style.backgroundColor = redColor;
+}
+
+function toggleCameraFacingMode() {
+  cameraConfig.facingMode =
+    cameraConfig.facingMode == "user" ? "environment" : "user";
 }
 
 function setStatusIsLoading() {
