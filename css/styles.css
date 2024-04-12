@@ -1,0 +1,112 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.centered-img {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+#scannerHeader, #scannerFooter {
+    align-items: center;
+    text-align: center;
+}
+
+#scannerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*height: 100%;*/
+    text-align: center;
+    white-space: normal;
+}
+
+#scanner {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    border-width: 10px !important;
+    margin: 1em;
+    height: 45vh;
+    width: 45vw;
+}
+
+#scanMessage {
+    font-size: large;
+    margin: 1em;
+    width: 90%;
+    overflow-wrap: break-word;
+}
+
+.scanner-button {
+    margin: 1em;
+    padding: 1em;
+    height: 7vh;
+    width: 15vw;
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 3em;
+    background-size: 5vh auto;
+}
+
+.scanner-button:disabled {
+    background-color: #f0f0f0;
+    background-image: none;
+    border-color: #ccc;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.scanner-button:disabled img {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+#btnStart {
+    background-image: url('../images/start.png');
+}
+
+#btnStop {
+    background-image: url('../images/stop.png');
+}
+
+#btnSwitch {
+    background-image: url('../images/switch.png');
+}
+
+@media (max-width: 900px) {
+    #btnStart, #btnStop, #btnSwitch {
+        font-size: 0.7em;
+        padding-left: 3.5em;
+        background-size: 5vh auto;
+    }
+
+    .centered-img {
+        top: 40%;
+    }
+}
+
+@media (max-width: 670px) {
+    #btnStart, #btnStop, #btnSwitch {
+        background-position: center;
+        color: transparent;
+        width: 12vw;
+    }
+
+    .centered-img {
+        top: 30%;
+    }
+}
+
+@media (max-width: 450px) {
+    .centered-img {
+        top: 25%;
+    }
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR code scanner (html5-qrcode)</title>
+  <link rel="icon" href="../images/qrcode.ico" />
+  <link href="css/styles.css" type="text/css" rel="stylesheet" />
+  <style>
+	
+  </style>
+</head>
+<body>
+    <div id="scannerHeader">
+        <h2>HTML5 QR code scanner</h2>
+    </div>
+    <div id="scannerContent">
+        <div id="scanner"></div>
+        <div id="scannerButtons">
+            <button id="btnSwitch" onclick="switchCamera()" class="scanner-button" disabled="disabled">Switch Camera</button>
+            <button id="btnStart" onclick="startScan()" class="scanner-button">Start Scan</button>
+            <button id="btnStop" onclick="stopScan()" class="scanner-button" disabled="disabled">Stop Scan</button>
+        </div>
+        <div id="scanMessage"></div>
+    </div>
+    <div id="scannerFooter">
+        <p>Powered by <a _target="_blank" rel="noopener" href="https://scanapp.org/">ScanApp.org</a></p>
+        <p>GitHub repo: <a target="_blank" rel="noopener" href="https://github.com/mebjas/html5-qrcode">HTML5 QR code</a></p>
+    </div>
+
+    <img id="imgLoading" alt="loading" src="./images/loading-bar.gif" class="centered-img" />
+    <img id="imgSuccess" alt="success" src="./images/success.png" class="centered-img" />
+    <img id="imgError" alt="error" src="./images/error.png" class="centered-img" />
+    <img id="imgWarning" alt="warning" src="./images/warning.png" class="centered-img" />
+    <img id="imgWaiting" alt="waiting" src="./images/waiting.png" class="centered-img" />
+
+	<script src="js/html5-qrcode.min.js"></script>
+	<script src="js/index.js"></script>
+</body>
+</html>
