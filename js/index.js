@@ -194,4 +194,16 @@ function setStatusIsLoading() {
   btnSwitch.disabled = true;
 }
 
+// This method will trigger user permissions
+Html5Qrcode.getCameras().then(devices => {
+    console.log('devices', devices);
+    if (devices && devices.length) {
+        let cameraId = devices[0].id;
+        console.log('cameraId', cameraId);
+    }
+}).catch(err => {
+    handleScannerError(err);
+});
+
+// Start to scan
 startScan();
