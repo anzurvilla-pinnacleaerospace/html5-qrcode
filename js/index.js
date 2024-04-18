@@ -188,7 +188,7 @@ function handleScannerError(err) {
   let customErrorMsg;
   if (typeof err === 'string' && err.includes('NotAllowedError')) {
     customErrorMsg = `Please check the camera device connection, then reload and\ngrant the necessary camera permissions to the web browser.`;
-  } else if (typeof err.name === 'string' && err.name.includes('AbortError')) {
+  } else if ((typeof err === 'string' && err.includes('AbortError')) || (typeof err.name === 'string' && err.name.includes('AbortError'))) {
     customErrorMsg = `Please check the camera device connection or, if it is already in use by another process, close it before entering this page.`;
   }
 
