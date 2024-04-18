@@ -1,4 +1,5 @@
 const blueColor = `rgba(0, 130, 255, 0.5)`;
+const grayColor = `rgba(200, 200, 200, 0.8)`;
 const greenColor = `rgba(0, 255, 0, 0.3)`;
 const redColor = `rgba(255, 0, 0, 0.3)`;
 const orangeColor = `rgba(255, 130, 0, 0.5)`;
@@ -16,9 +17,9 @@ const btnSwitch = document.getElementById('btnSwitch');
 const scanMessage = document.getElementById('scanMessage');
 
 const scanner = document.getElementById('scanner');
-scanner.style.backgroundColor = yellowColor;
 scanner.style.backgroundImage = 'url(./images/camera-notfound.jpg)';
 scanner.style.backgroundSize = 'cover';
+scanner.style.borderColor = grayColor;
 
 const audio = new Audio();
 const msgTimeout = 5 * 1000; // 5 second pause to display messages
@@ -71,7 +72,7 @@ function startScan() {
     alert(warningMsg);
     return;
   }
-  setStatusIsLoading();
+  setStatusIsLoading(true);
 
   // Set camera for mobiles
   let cameraId = cameraConfig;
@@ -87,6 +88,7 @@ function startScan() {
       console.log('Scanner started.');
       playSound('start', 1000);
       scanner.style.backgroundImage = 'url(./images/camera-off.jpg)';
+      scanner.style.borderColor = blueColor;
       scanner.style.height = 'auto';
       btnStop.disabled = false;
       // disable switch button when there is only one or no camera on computers
@@ -98,9 +100,7 @@ function startScan() {
       handleScannerError(err);
     })
     .finally(() => {
-      setTimeout(() => {
-        imgLoading.style.display = 'none';
-      }, 750);
+      setStatusIsLoading(false);
     });
 }
 
@@ -111,13 +111,14 @@ function stopScan() {
     alert(warningMsg);
     return;
   }
-  setStatusIsLoading();
+  setStatusIsLoading(true);
 
   html5QrCode
     .stop()
     .then((ignore) => {
       console.log('Scanner stopped.');
       playSound('stop', 100);
+      scanner.style.borderColor = grayColor;
       scanner.style.height = screenHeight * 0.55 + 'px';
       btnStart.disabled = false;
     })
@@ -126,9 +127,7 @@ function stopScan() {
       handleScannerError(err);
     })
     .finally(() => {
-      setTimeout(() => {
-        imgLoading.style.display = 'none';
-      }, 450);
+      setStatusIsLoading(false);
     });
 }
 
@@ -161,13 +160,15 @@ function onScanSuccess(decodedText, decodedResult) {
 
   if (codeFormatName === 'QR_CODE') {
     playSound('success', 1000);
+    scanner.style.borderColor = greenColor;
     imgSuccess.style.display = 'block';
     scanMessage.innerHTML = `Scanned code: ${scannedCode}`;
     pauseAndResumeScanner();
   } else {
-    playSound('warning', 1000);
     imgWarning.style.display = 'block';
+    playSound('warning', 100);
     scanMessage.innerHTML = `Code format not allowed.`;
+    scanner.style.borderColor = yellowColor;
     pauseAndResumeScanner();
   }
 }
@@ -179,10 +180,11 @@ function onScanFailure(scanError) {
 
 function handleScannerError(err) {
   console.error('error', err);
+  setStatusIsLoading(false);
   if (audio.readyState == 4) playSound('warning', 100);
 
   imgError.style.display = 'block';
-  scanner.style.backgroundColor = redColor;
+  scanner.style.borderColor = redColor;
   scanMessage.innerHTML = 'Error: ' + err;
 
   let customErrorMsg;
@@ -195,6 +197,7 @@ function handleScannerError(err) {
   if (customErrorMsg !== '') {
     btnStart.disabled = true;
     scanMessage.innerHTML += `<p>${customErrorMsg}</p>`;
+    scanner.style.backgroundImage = 'url(./images/camera-notfound.jpg)';
     alert(customErrorMsg);
   } else alert(err.name || err.message || err);
 }
@@ -215,6 +218,8 @@ function pauseAndResumeScanner() {
   setTimeout(() => {
     html5QrCode.resume();
     imgSuccess.style.display = 'none';
+    imgWarning.style.display = 'none';
+    scanner.style.borderColor = blueColor;
   }, pauseTimeout || 2000);
 }
 
@@ -230,11 +235,18 @@ function playSound(soundFilename, timeout) {
   } else console.warn(`Audio player web is not able to play sounds.`);
 }
 
-function setStatusIsLoading() {
-  imgLoading.style.display = 'block';
-  btnStart.disabled = true;
-  btnStop.disabled = true;
-  btnSwitch.disabled = true;
+function setStatusIsLoading(isLoading) {
+  if (isLoading) {
+    imgLoading.style.display = 'block';
+    scanner.style.borderColor = grayColor;
+    btnStart.disabled = true;
+    btnStop.disabled = true;
+    btnSwitch.disabled = true;
+  } else {
+    setTimeout(() => {
+      imgLoading.style.display = 'none';
+    }, 750);
+  }
 }
 
 function getCurrentCameraLabel() {
