@@ -34,7 +34,7 @@ if (screenHeight < 600) scanner.style.width = '30%';
 
 const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-const html5QrCode = new Html5Qrcode('scanner');
+const html5QrCode = new Html5Qrcode('scanner'); // JS lib source: https://scanapp.org/
 const cameraConfig = { facingMode: 'environment' };
 const scannerConfig = {
   disableFlip: false, // default = false, the scanner can scan for horizontally flipped QR Codes. This also enables scanning QR code using the front camera on mobile devices which are sometimes mirrored. Recommend changing this only if: you are sure that the camera feed cannot be mirrored (Horizontally flipped) or you are facing performance issues with this enabled.
@@ -178,16 +178,24 @@ function onScanFailure(scanError) {
 }
 
 function handleScannerError(err) {
-  console.error(err);
+  console.error('error', err);
   if (audio.readyState == 4) playSound('warning', 100);
 
   imgError.style.display = 'block';
   scanner.style.backgroundColor = redColor;
   scanMessage.innerHTML = 'Error: ' + err;
 
-  if (err.includes('NotAllowedError')) {
+  let customErrorMsg;
+  if (typeof err === 'string' && err.includes('NotAllowedError')) {
+    customErrorMsg = `Please check the camera device connection, then reload and\ngrant the necessary camera permissions to the web browser.`;
+  } else if (typeof err.name === 'string' && err.name.includes('AbortError')) {
+    customErrorMsg = `Please check the camera device connection or, if it is already in use by another process, close it before entering this page.`;
+  }
+
+  if (customErrorMsg !== '') {
     btnStart.disabled = true;
-    alert('Please check the camera device connection, then reload and\ngrant the necessary camera permissions to the web browser.');
+    scanMessage.innerHTML += `<p>${customErrorMsg}</p>`;
+    alert(customErrorMsg);
   } else alert(err.name || err.message || err);
 }
 
