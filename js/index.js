@@ -32,7 +32,7 @@ if (screenWidth - screenHeight < 600) scanner.style.width = '70%';
 else if (screenWidth - screenHeight < 800) scanner.style.width = '50%';
 if (screenHeight < 600) scanner.style.width = '30%';
 
-const isMobileDevice = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 const html5QrCode = new Html5Qrcode('scanner');
 const cameraConfig = { facingMode: 'environment' };
